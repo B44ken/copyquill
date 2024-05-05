@@ -23,7 +23,6 @@ const buttons = {
     copyImage: document.querySelector('.a-copy-image'),
     saveImage: document.querySelector('.a-save-image')
 }
-
 let controlDown = false
 document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape')
