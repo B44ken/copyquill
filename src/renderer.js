@@ -1,8 +1,22 @@
-const fieldElement = document.querySelector('.field')
+const fieldElement = document.querySelector('.fields')
 
 const MQ = MathQuill.getInterface(2)
-const field = MQ.MathField(document.querySelector('.field'))
-field.focus()
+
+let fieldIndex = 0
+const fields = [
+    MQ.MathField(document.querySelector('.field div'))
+]
+
+const addField = () => {
+    const div = document.createElement('div')
+    div.className = 'field'
+    const field = MQ.MathField(div)
+    fieldElement.appendChild(div)
+    fields.push(field)
+    field.focus()
+}
+
+addField()
 
 const buttons = {
     copyLatex: document.querySelector('.a-copy-latex'),
@@ -13,16 +27,30 @@ const buttons = {
 let controlDown = false
 document.addEventListener('keydown', (e) => {
     if(e.key === 'Escape')
-        field.focus()
+        fields[fieldIndex].focus()
 
-    if(e.key == 'Control') {
+    else if(e.key == 'Enter')
+        addField()
+
+    else if(e.key == 'Delete') {
+        if(fields.length === 1)
+            return
+        const active = document.activeElement.parentElement.parentElement
+        if(!active)
+            return
+        const index = Array.from(fieldElement.children).indexOf(active)
+        fieldElement.removeChild(active)
+        fields.splice(index, 1)
+    }
+
+    else if(e.key == 'Control') {
         controlDown = true
         buttons.copyLatex.textContent = 'copy latex (L)'
         buttons.copyImage.textContent = 'copy image (I)'
         buttons.saveImage.textContent = 'save image (S)'
     }
-
-    if(controlDown) {
+    
+    else if(controlDown) {
         if(e.key == 'l')
             buttons.copyLatex.click()
         if(e.key == 'i')
@@ -42,7 +70,7 @@ document.addEventListener('keyup', (e) => {
 })
 
 buttons.copyLatex.addEventListener('click', () => {
-    navigator.clipboard.writeText(field.latex())
+    navigator.clipboard.writeText(fields[fieldIndex].latex())
 })
 
 buttons.copyImage.addEventListener('click', () => {
@@ -52,7 +80,7 @@ buttons.copyImage.addEventListener('click', () => {
                 new ClipboardItem({ 'image/png': blob })
             ])
         })
-        // field.focus()
+        // fields[fieldIndex].focus()
     })
 })
 
@@ -63,6 +91,6 @@ buttons.saveImage.addEventListener('click', async () => {
         link.href = uri
         link.download = 'equation.png'
         link.click()
-        // field.focus()
+        // fields[fieldIndex].focus()
     })
 })

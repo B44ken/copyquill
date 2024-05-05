@@ -36,6 +36,11 @@ body {
   height: calc(100vh - 30px);
 }
 
+.field{
+  display: block;
+  margin: 4px auto;
+}
+
 .buttons {
   height: 30px;
 }
