@@ -1,4 +1,4 @@
-const { app, BrowserWindow } = require('electron');
+  const { app, BrowserWindow } = require('electron');
 const path = require('node:path');
 
 if (require('electron-squirrel-startup')) {
@@ -9,9 +9,6 @@ const createWindow = () => {
   const mainWindow = new BrowserWindow({
     width: 400,
     height: 200,
-    webPreferences: {
-      preload: path.join(__dirname, 'preload.js'),
-    },
     autoHideMenuBar: true,
     titleBarStyle: 'hidden',
   });
