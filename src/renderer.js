@@ -3,9 +3,7 @@ const fieldElement = document.querySelector('.fields')
 const MQ = MathQuill.getInterface(2)
 
 let fieldIndex = 0
-const fields = [
-    MQ.MathField(document.querySelector('.field div'))
-]
+const fields = []
 
 const addField = () => {
     const div = document.createElement('div')
@@ -69,7 +67,8 @@ document.addEventListener('keyup', (e) => {
 })
 
 buttons.copyLatex.addEventListener('click', () => {
-    navigator.clipboard.writeText(fields[fieldIndex].latex())
+    let latex = fields.map(f => f.latex()).join('\n')
+    navigator.clipboard.writeText(latex)
 })
 
 buttons.copyImage.addEventListener('click', () => {
